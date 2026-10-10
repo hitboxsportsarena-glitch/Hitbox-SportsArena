@@ -1,0 +1,7 @@
+-- QUICK FIX: Disable RLS for all tables temporarily
+-- Run this in Supabase SQL Editor
+
+ALTER TABLE teams DISABLE ROW LEVEL SECURITY;
+ALTER TABLE team_players DISABLE ROW LEVEL SECURITY;
+ALTER TABLE payments DISABLE ROW LEVEL SECURITY;
+ALTER TABLE tournaments DISABLE ROW LEVEL SECURITY;
