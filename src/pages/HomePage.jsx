@@ -79,7 +79,34 @@ export default function HomePage() {
       </section>
 
       <footer className="footer">
-        <p>&copy; 2024 Hit Box Cricket. All rights reserved.</p>
+        <div className="footer-content">
+          <div className="footer-section">
+            <h3>Hit Box Cricket</h3>
+            <p>Your Gateway to Box Cricket Tournaments</p>
+          </div>
+
+          <div className="footer-section">
+            <h4>Quick Links</h4>
+            <div className="footer-links">
+              <Link to="/register">Register Team</Link>
+              <Link to="/contact">Contact Us</Link>
+            </div>
+          </div>
+
+          <div className="footer-section">
+            <h4>Legal</h4>
+            <div className="footer-links">
+              <Link to="/terms-and-conditions">Terms & Conditions</Link>
+              <Link to="/privacy-policy">Privacy Policy</Link>
+              <Link to="/cancellation-refund">Cancellation & Refund</Link>
+              <Link to="/shipping-exchange">Shipping & Exchange</Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <p>&copy; 2024 Hit Box Cricket. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   )
