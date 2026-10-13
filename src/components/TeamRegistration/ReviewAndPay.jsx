@@ -6,6 +6,18 @@ export default function ReviewAndPay({ teamData, players, tournament, onBack, on
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  // Helper function to format player data for database insertion
+  const formatPlayersForDB = (players, teamId) => {
+    return players.map(player => ({
+      team_id: teamId,
+      player_name: player.player_name,
+      mobile: player.mobile,
+      email: player.email || null,
+      role: player.role || null,
+      jersey_number: player.jersey_number ? parseInt(player.jersey_number) : null
+    }))
+  }
+
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
       const script = document.createElement('script')
@@ -40,10 +52,7 @@ export default function ReviewAndPay({ teamData, players, tournament, onBack, on
       if (teamError) throw new Error('Failed to create team registration')
 
       // Step 2: Add all players
-      const playersWithTeamId = players.map(player => ({
-        ...player,
-        team_id: team.id
-      }))
+      const playersWithTeamId = formatPlayersForDB(players, team.id)
 
       const { error: playersError } = await supabase
         .from('team_players')
@@ -143,10 +152,7 @@ export default function ReviewAndPay({ teamData, players, tournament, onBack, on
       if (teamError) throw new Error('Failed to create team registration')
 
       // Step 2: Add all players
-      const playersWithTeamId = players.map(player => ({
-        ...player,
-        team_id: team.id
-      }))
+      const playersWithTeamId = formatPlayersForDB(players, team.id)
 
       const { error: playersError } = await supabase
         .from('team_players')
@@ -222,6 +228,12 @@ export default function ReviewAndPay({ teamData, players, tournament, onBack, on
 
   const verifyPayment = async (paymentResponse, teamId) => {
     try {
+      console.log('🔍 Verifying payment:', {
+        order_id: paymentResponse.razorpay_order_id,
+        payment_id: paymentResponse.razorpay_payment_id,
+        signature: paymentResponse.razorpay_signature
+      })
+
       const { data, error } = await supabase.functions.invoke(
         'verify-razorpay-payment',
         {
@@ -233,11 +245,20 @@ export default function ReviewAndPay({ teamData, players, tournament, onBack, on
         }
       )
 
-      if (error || !data.success) {
+      console.log('📥 Verification response:', { data, error })
+
+      if (error) {
+        console.error('❌ Supabase function error:', error)
+        throw new Error(error.message || 'Payment verification failed')
+      }
+
+      if (!data.success) {
+        console.error('❌ Verification failed:', data)
         throw new Error(data?.error || 'Payment verification failed')
       }
 
       // Payment successful
+      console.log('✅ Payment verified successfully!')
       onSuccess(data.registration)
     } catch (err) {
       console.error('Verification error:', err)

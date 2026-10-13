@@ -2,7 +2,7 @@ import { useState } from 'react'
 import TeamDetailsForm from '../components/TeamRegistration/TeamDetailsForm'
 import PlayersForm from '../components/TeamRegistration/PlayersForm'
 import TournamentSelection from '../components/TeamRegistration/TournamentSelection'
-import UPIPayment from '../components/TeamRegistration/UPIPayment'
+import ReviewAndPay from '../components/TeamRegistration/ReviewAndPay'
 import RegistrationSuccess from '../components/TeamRegistration/RegistrationSuccess'
 import '../styles/registration.css'
 
@@ -105,7 +105,7 @@ export default function TeamRegistrationPage() {
           )}
 
           {currentStep === STEPS.REVIEW && (
-            <UPIPayment
+            <ReviewAndPay
               teamData={teamData}
               players={players}
               tournament={selectedTournament}

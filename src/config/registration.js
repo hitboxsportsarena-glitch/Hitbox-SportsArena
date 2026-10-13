@@ -29,6 +29,9 @@ export const REGISTRATION_CONFIG = {
     REFUNDED: 'refunded'
   },
   
-  // Payment method: 'upi' or 'razorpay'
-  PAYMENT_METHOD: 'upi'
+  // Payment method: 'razorpay' (live integration)
+  PAYMENT_METHOD: 'razorpay',
+  
+  // Testing mode - set to false for production
+  TESTING_MODE: false
 }
